@@ -1,0 +1,103 @@
+*{
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    background-color: rgb(64, 146, 194);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+legend{
+    display: block;
+    box-sizing: border-box;
+    width: calc(100% - 40px);
+    text-align:justify;
+    justify-content: left;
+    font-size: 30px;
+    padding: 5px;
+    background-color: rgb(2, 197, 90);
+    color: rgb(229, 232, 235);
+    margin: 20px;
+    border: 2px solid rgb(202, 34, 57);
+    border-radius: 5px;
+}
+.grupo-input{
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 252, 248);
+    border-radius: 5px;
+    font-weight: bold;
+    border: 2px solid black;
+    border-radius: 15px;
+    padding: 10px;
+}
+.grupo-botones{
+    display: flex;
+    gap: 10px;
+    margin: 20px;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+}
+
+button{
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgb(73, 252, 213);
+    color: rgb(252, 67, 67);
+    border: 2px solid rgb(250, 170, 79);
+    font-weight: bold;
+}
+form{
+    background-color: rgb(73, 223, 250);
+    margin: 20px;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 15px;
+}
+input, select{
+    background-color: white;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+}
+.genero{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+.iniciar-sesion{
+    margin: 20px;
+    padding : 10px;
+    text-align: center;
+}
+.crear-cuenta{
+    margin: 20px;
+    padding : 10px;
+    text-align: center;
+}
+
+
+input:focus, select:focus {
+border-Color: rgb (54, 54, 212);
+box-shadow: 0 0 0 3px rgb(0, 0, 0);
+}
+
+.contenedor-formulario {
+background-color: rgb(238, 241, 243);
+padding: 10px;
+border-radius: 8px;
+box-shadow: 0 4px 12;
+}
