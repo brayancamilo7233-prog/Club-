@@ -1,0 +1,75 @@
+<?php
+
+header('Content-Type: application/json; charset=utf-8');
+
+function responder($estado, $success, $mensaje)
+{
+    http_response_code($estado);
+    echo json_encode(
+        ['success' => $success, 'mensaje' => $mensaje],
+        JSON_UNESCAPED_UNICODE
+    );
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    responder(405, false, 'Método no permitido');
+}
+
+require_once __DIR__ . '/Asociado.php';
+
+$cuerpo = file_get_contents('php://input');
+$datos = json_decode($cuerpo, true);
+
+if (json_last_error() !== JSON_ERROR_NONE || !is_array($datos)) {
+    responder(400, false, 'El cuerpo de la solicitud debe ser JSON válido');
+}
+
+$camposObligatorios = [
+    'documento',
+    'nombres',
+    'apellidos',
+    'fechaNacimiento',
+    'genero',
+    'direccionResidencia',
+    'ciudad',
+    'telefono',
+    'email',
+];
+
+foreach ($camposObligatorios as $campo) {
+    if (!isset($datos[$campo]) || !is_scalar($datos[$campo]) || trim((string) $datos[$campo]) === '') {
+        responder(400, false, 'Falta un campo obligatorio: ' . $campo);
+    }
+    $datos[$campo] = trim((string) $datos[$campo]);
+}
+
+if (filter_var($datos['email'], FILTER_VALIDATE_EMAIL) === false) {
+    responder(400, false, 'El correo electrónico no es válido');
+}
+
+if (!in_array($datos['genero'], ['Masculino', 'Femenino', 'otro'], true)) {
+    responder(400, false, 'El género seleccionado no es válido');
+}
+
+$fecha = DateTime::createFromFormat('!Y-m-d', $datos['fechaNacimiento']);
+if (!$fecha || $fecha->format('Y-m-d') !== $datos['fechaNacimiento']) {
+    responder(400, false, 'La fecha de nacimiento no es válida');
+}
+
+try {
+    $asociado = new Asociado($datos);
+    $asociado->guardar();
+    responder(201, true, 'Asociado guardado exitosamente');
+} catch (PDOException $error) {
+    error_log($error->getMessage());
+
+    if ($error->getCode() === '23000') {
+        responder(409, false, 'Ya existe un asociado con ese documento o correo electrónico');
+    }
+
+    responder(500, false, 'No fue posible guardar el asociado. Verifica la conexión con la base de datos.');
+} catch (Throwable $error) {
+    error_log($error->getMessage());
+    responder(500, false, 'Ocurrió un error interno al guardar el asociado');
+}
