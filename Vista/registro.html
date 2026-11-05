@@ -12,27 +12,27 @@
 
     <div>
 
-        <form id="FormRegistro" action="" method="post">
+        <form id="formRegistro" action="../Modelo/guardarAsociado.php" method="post">
                 <legend>Registro de asociados - Acerias</legend>
 
                 <div class="grupo-input">
                     <label>Ingresar Documento:</label>
-                    <input type="number" id="documento" required placeholder="ejemplo:1052837272">
+                    <input type="number" id="documento" name="documento" required placeholder="ejemplo:1052837272">
                 </div>
 
                 <div class="grupo-input">
                     <label>Ingresar el Nombre:</label>
-                    <input type="text" id="nombre" required placeholder="ejemplo:Brayan Lara">
+                    <input type="text" id="nombre" name="nombre" required placeholder="ejemplo:Brayan Lara">
                 </div>
 
                 <div class="grupo-input">
                     <label>Ingresar el Apellido:</label>
-                    <input type="text" id="apellido" required placeholder="ejemplo:Brayan Lara">
+                    <input type="text" id="apellido" name="apellido" required placeholder="ejemplo:Brayan Lara">
                 </div>
 
                 <div class="grupo-input">
                     <label>Ingresar la Fecha de Nacimiento:</label>
-                    <input type="date" id="fechaNacimiento" required placeholder="ejemplo:19/02/2005">
+                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required placeholder="ejemplo:19/02/2005">
                 </div>
 
                 <div class="grupo-input">
@@ -43,7 +43,7 @@
                         <span>Masculino</span>
                         </label>
                         <label>
-                        <input type="radio" id="Femenino" name="genero" value="M">
+                        <input type="radio" id="Femenino" name="genero" value="Femenino">
                         <span>Femenino</span>
                         </label>
                         <label>
@@ -55,12 +55,12 @@
 
                 <div class="grupo-input">
                     <label>Ingresar la Direccion:</label>
-                    <input type="text" id="direccionResidencia" required placeholder="ejemplo: cra 11 9 92">
+                    <input type="text" id="direccionResidencia" name="direccionResidencia" required placeholder="ejemplo: cra 11 9 92">
                 </div>
 
                 <div class="grupo-input">
                     <label>Ingresar la Ciudad:</label>
-                    <select name="Ciudad" id="ciudad" required>
+                    <select name="ciudad" id="ciudad" required>
                         <option value="sogamoso">Sogamoso</option>
                         <option value="duitama">Duitama</option>
                         <option value="tunja">Tunja</option>
@@ -71,18 +71,20 @@
 
                 <div class="grupo-input">
                     <label>Ingresar el Telefono:</label>
-                    <input type="tel" id="telefono" required placeholder="ejemplo: 1052837272">
+                    <input type="tel" id="telefono" name="telefono" required placeholder="ejemplo: 1052837272">
                 </div>
 
                 <div class="grupo-input">
                     <label>Ingresar el Email:</label>
-                    <input type="email" id="email" required placeholder="ejemplo: brayancamilo7233@gmail.com">
+                    <input type="email" id="email" name="email" required placeholder="ejemplo: brayancamilo7233@gmail.com">
                 </div>
 
                 <div class="grupo-botones">
                     <button type="submit">Guardar</button>
                     <button type="reset">Limpiar</button>
                 </div>
+
+                <p id="mensajeRegistro" role="status" aria-live="polite"></p>
 
                 <div class="iniciar-sesion">
                     <p>Ya tienes una cuenta? <a href="login.html">Iniciar sesion</a></p>
@@ -91,6 +93,7 @@
 
     </div>
 
+    <script src="../Controlador/Asociados.js"></script>
 </body>
 
 </html>
