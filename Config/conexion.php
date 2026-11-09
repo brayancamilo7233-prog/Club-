@@ -1,32 +1,24 @@
 <?php
-require_once "../ClubAdso";
-class Asociado
+
+class Conexion
 {
-    private $documento;
-    private $nombres;
-    private $apellidos;
-    private $fechaNacimiento;
-    private $genero;
-    private $direccionResidencia;
-    private $ciudad;
-    private $telefono;
-    private $email;
-
-    public function __construct($datos)
+    public function conectar()
     {
-        $this->documento = $datos['documento'];
-        $this->nombres = $datos['nombres'];
-        $this->apellidos = $datos['apellidos'];
-        $this->fechaNacimiento = $datos['fechaNacimiento'];
-        $this->genero = $datos['genero'];
-        $this->direccionResidencia = $datos['direccionResidencia'];
-        $this->ciudad = $datos['ciudad'];
-        $this->telefono = $datos['telefono'];
-        $this->email = $datos['email'];
+        $host = getenv('DB_HOST') ?: '127.0.0.1';
+        $puerto = getenv('DB_PORT') ?: '3306';
+        $baseDatos = getenv('DB_NAME') ?: 'club';
+        $usuario = getenv('DB_USER') ?: 'root';
+        $contrasena = getenv('DB_PASSWORD');
+
+        if ($contrasena === false) {
+            $contrasena = '';
+        }
+
+        $dsn = "mysql:host={$host};port={$puerto};dbname={$baseDatos};charset=utf8mb4";
+
+        return new PDO($dsn, $usuario, $contrasena, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
     }
-
-    public function guardar()
-    {
-        $sql = "INSERT INTO asociados (documento, nombres, apellidos, fechaNacimiento, genero, direccionResidencia, ciudad, telefono, email) VALUES (:documento, :nombres, :apellidos, ...)";
-        $consulta = $this->conexion->prepare($sql);
-        return $consulta->execute([
+}

@@ -2,6 +2,21 @@
 
 Interfaz web académica responsive para registrar actividades, pagos, préstamos y asociados. Está construida con HTML5, Bootstrap 5 y CSS/JavaScript propios.
 
+## Ejecutar localmente con PHP y MySQL
+
+1. Inicia MySQL desde Laragon y ejecuta `DB/club_acerias.sql` en HeidiSQL conectado a la base `club`. El script crea las tablas de asociados, actividades, pagos y préstamos sin modificar la tabla `usuarios`.
+    Si ya habías creado la tabla `asociados` con la versión anterior, ejecuta una sola vez `DB/migracion_persistencia.sql` para agregar los campos y tablas nuevos.
+2. Comprueba los datos de conexión en `Config/conexion.php`. Por defecto usa `127.0.0.1:3306`, la base `club`, el usuario `root` y contraseña vacía. Si tu usuario o contraseña son distintos, define `DB_USER` y `DB_PASSWORD` en el entorno antes de iniciar PHP; también puedes cambiar `DB_HOST` y `DB_PORT`.
+3. Abre PowerShell en la carpeta del proyecto e inicia el servidor local de PHP:
+
+   ```powershell
+    & "C:\laragon\bin\php\php-8.3.36-Win32-vs16-x64\php.exe" -S 127.0.0.1:8080 -t .
+   ```
+
+4. Abre `http://localhost:8080` en Chrome.
+
+No abras la página con `file://` ni uses Live Server: PHP necesita servirse por HTTP. Mantén abierta la terminal mientras uses el sitio y pulsa `Ctrl+C` para detener el servidor.
+
 ## Estructura
 
 ```text
@@ -32,9 +47,9 @@ Club--main/
 - `Vista/prestamos.html`: código, asociado, monto, fecha de solicitud, plazo y observaciones.
 - `Vista/asociados.html`: documento, nombre, correo, teléfono, dirección, fecha de ingreso y estado.
 - `Assets/css/club.css`: hoja compartida con la identidad visual azul y turquesa, bordes redondeados, bloques para campos y ajustes responsive de los cuatro formularios.
-- `Assets/js/app.js`: validación del navegador, confirmación visual y limpieza del formulario.
+- `Assets/js/app.js`: validación del navegador, envío de formularios al backend y confirmación de guardado.
 
-Bootstrap 5 y Bootstrap Icons se cargan desde CDN, por lo que se requiere conexión a internet para obtener esos recursos. Los formularios son una maqueta de frontend: no envían ni guardan datos; para persistirlos haría falta conectarlos a un backend.
+Bootstrap 5 y Bootstrap Icons se cargan desde CDN, por lo que se requiere conexión a internet para obtener esos recursos. Los formularios guardan sus datos en MySQL; los módulos de pagos y préstamos requieren que exista previamente el asociado seleccionado.
 
 ## Publicar en GitHub
 

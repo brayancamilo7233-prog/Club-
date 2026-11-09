@@ -1,23 +1,66 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versión del servidor:         8.4.3 - MySQL Community Server - GPL
--- SO del servidor:              Win64
--- HeidiSQL Versión:             12.8.0.6908
--- --------------------------------------------------------
+USE club;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE TABLE IF NOT EXISTS asociados (
+    documento VARCHAR(30) NOT NULL,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    fechaNacimiento DATE NOT NULL,
+    genero VARCHAR(20) NOT NULL,
+    direccionResidencia VARCHAR(200) NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    telefono VARCHAR(30) NOT NULL,
+    email VARCHAR(254) NOT NULL,
+    fechaIngreso DATE NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'activo',
+    creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (documento),
+    UNIQUE KEY uq_asociados_email (email)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
--- La exportación de datos fue deseleccionada.
+CREATE TABLE IF NOT EXISTS actividades (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(150) NOT NULL,
+    descripcion TEXT NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    lugar VARCHAR(200) NOT NULL,
+    responsable VARCHAR(150) NOT NULL,
+    creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+CREATE TABLE IF NOT EXISTS pagos (
+    numeroRecibo VARCHAR(50) NOT NULL,
+    asociadoDocumento VARCHAR(30) NOT NULL,
+    concepto VARCHAR(200) NOT NULL,
+    valor DECIMAL(12,2) NOT NULL,
+    fechaPago DATE NOT NULL,
+    metodoPago VARCHAR(30) NOT NULL,
+    creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (numeroRecibo),
+    KEY idx_pagos_asociado (asociadoDocumento),
+    CONSTRAINT fk_pagos_asociado FOREIGN KEY (asociadoDocumento)
+        REFERENCES asociados (documento) ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS prestamos (
+    codigoPrestamo VARCHAR(50) NOT NULL,
+    asociadoDocumento VARCHAR(30) NOT NULL,
+    monto DECIMAL(12,2) NOT NULL,
+    fechaSolicitud DATE NOT NULL,
+    plazoMeses SMALLINT UNSIGNED NOT NULL,
+    observaciones TEXT NULL,
+    creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (codigoPrestamo),
+    KEY idx_prestamos_asociado (asociadoDocumento),
+    CONSTRAINT fk_prestamos_asociado FOREIGN KEY (asociadoDocumento)
+        REFERENCES asociados (documento) ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;

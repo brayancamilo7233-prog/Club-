@@ -33,7 +33,7 @@
     </div>
     <section class="card form-card">
       <div class="card-body p-4 p-md-5">
-        <form class="club-form" novalidate>
+        <form class="club-form" data-tipo="asociado" novalidate>
           <div class="row g-4">
             <div class="col-md-6">
               <label for="documento" class="form-label">Documento</label>
@@ -41,13 +41,18 @@
               <div class="invalid-feedback">Ingresa el documento del asociado.</div>
             </div>
             <div class="col-md-6">
-              <label for="nombreCompleto" class="form-label">Nombre completo</label>
-              <input id="nombreCompleto" name="nombreCompleto" class="form-control" type="text" autocomplete="name" placeholder="Nombre y apellidos" required>
-              <div class="invalid-feedback">Ingresa el nombre completo.</div>
+              <label for="nombres" class="form-label">Nombres</label>
+              <input id="nombres" name="nombres" class="form-control" type="text" autocomplete="given-name" placeholder="Nombres" required>
+              <div class="invalid-feedback">Ingresa los nombres.</div>
             </div>
             <div class="col-md-6">
-              <label for="correo" class="form-label">Correo electrónico</label>
-              <input id="correo" name="correo" class="form-control" type="email" autocomplete="email" placeholder="nombre@correo.com" required>
+              <label for="apellidos" class="form-label">Apellidos</label>
+              <input id="apellidos" name="apellidos" class="form-control" type="text" autocomplete="family-name" placeholder="Apellidos" required>
+              <div class="invalid-feedback">Ingresa los apellidos.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">Correo electrónico</label>
+              <input id="email" name="email" class="form-control" type="email" autocomplete="email" placeholder="nombre@correo.com" required>
               <div class="invalid-feedback">Ingresa un correo electrónico válido.</div>
             </div>
             <div class="col-md-6">
@@ -56,9 +61,29 @@
               <div class="invalid-feedback">Ingresa el teléfono.</div>
             </div>
             <div class="col-12">
-              <label for="direccion" class="form-label">Dirección</label>
-              <input id="direccion" name="direccion" class="form-control" type="text" autocomplete="street-address" placeholder="Dirección de residencia" required>
+              <label for="direccionResidencia" class="form-label">Dirección</label>
+              <input id="direccionResidencia" name="direccionResidencia" class="form-control" type="text" autocomplete="street-address" placeholder="Dirección de residencia" required>
               <div class="invalid-feedback">Ingresa la dirección.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="ciudad" class="form-label">Ciudad</label>
+              <input id="ciudad" name="ciudad" class="form-control" type="text" autocomplete="address-level2" placeholder="Ciudad de residencia" required>
+              <div class="invalid-feedback">Ingresa la ciudad.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+              <input id="fechaNacimiento" name="fechaNacimiento" class="form-control" type="date" required>
+              <div class="invalid-feedback">Selecciona la fecha de nacimiento.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="genero" class="form-label">Género</label>
+              <select id="genero" name="genero" class="form-select" required>
+                <option value="" selected disabled>Selecciona una opción</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="otro">Otro</option>
+              </select>
+              <div class="invalid-feedback">Selecciona el género.</div>
             </div>
             <div class="col-md-6">
               <label for="fechaIngreso" class="form-label">Fecha de ingreso</label>
@@ -80,7 +105,7 @@
             <button class="btn btn-outline-secondary px-4" type="reset"><i class="bi bi-eraser me-2"></i>Limpiar</button>
           </div>
           <div class="alert alert-success mt-4 mb-0 d-none" role="status" aria-live="polite"></div>
-          <p class="form-note mt-3 mb-0"><i class="bi bi-info-circle me-1"></i>Demostración académica: el formulario no envía ni almacena datos.</p>
+          <p class="form-note mt-3 mb-0"><i class="bi bi-info-circle me-1"></i>Los datos se guardarán en la base de datos del club.</p>
         </form>
       </div>
     </section>

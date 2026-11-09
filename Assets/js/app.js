@@ -1,7 +1,34 @@
 document.querySelectorAll(".club-form").forEach((form) => {
   const message = form.querySelector('[role="status"]');
+  const submitButton = form.querySelector('[type="submit"]');
 
-  form.addEventListener("submit", (event) => {
+  const showMessage = (text, success) => {
+    message.textContent = text;
+    message.classList.toggle("alert-success", success);
+    message.classList.toggle("alert-danger", !success);
+    message.classList.remove("d-none");
+  };
+
+  const associatedSelect = form.querySelector('select[name="asociado"]');
+  if (associatedSelect) {
+    fetch("../Modelo/obtenerAsociados.php")
+      .then((response) => response.json())
+      .then((result) => {
+        if (!result.success) throw new Error(result.mensaje);
+        result.asociados.forEach((asociado) => {
+          const option = document.createElement("option");
+          option.value = asociado.documento;
+          option.textContent = `${asociado.nombre} (${asociado.documento})`;
+          associatedSelect.append(option);
+        });
+        if (result.asociados.length === 0) {
+          showMessage("Registra primero un asociado para poder continuar.", false);
+        }
+      })
+      .catch(() => showMessage("No se pudo cargar la lista de asociados.", false));
+  }
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     form.classList.add("was-validated");
 
@@ -11,14 +38,37 @@ document.querySelectorAll(".club-form").forEach((form) => {
       return;
     }
 
-    message.textContent =
-      "Formulario validado correctamente. Esta demostración no almacena datos.";
-    message.classList.remove("d-none");
+    submitButton.disabled = true;
+    try {
+      const esAsociado = form.dataset.tipo === "asociado";
+      const endpoint = esAsociado
+        ? "../Modelo/guardarAsociado.php"
+        : `../Modelo/guardarRegistro.php?tipo=${encodeURIComponent(form.dataset.tipo)}`;
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.mensaje || "No fue posible guardar los datos.");
+      }
+
+      form.reset();
+      form.classList.remove("was-validated");
+      showMessage(result.mensaje, true);
+    } catch (error) {
+      showMessage(error.message || "No fue posible conectar con el servidor.", false);
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 
   form.addEventListener("reset", () => {
     form.classList.remove("was-validated");
     message.classList.add("d-none");
+    message.classList.remove("alert-danger");
+    message.classList.add("alert-success");
     message.textContent = "";
   });
 });

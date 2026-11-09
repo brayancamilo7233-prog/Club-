@@ -35,6 +35,8 @@ $camposObligatorios = [
     'ciudad',
     'telefono',
     'email',
+    'fechaIngreso',
+    'estado',
 ];
 
 foreach ($camposObligatorios as $campo) {
@@ -52,9 +54,15 @@ if (!in_array($datos['genero'], ['Masculino', 'Femenino', 'otro'], true)) {
     responder(400, false, 'El género seleccionado no es válido');
 }
 
-$fecha = DateTime::createFromFormat('!Y-m-d', $datos['fechaNacimiento']);
-if (!$fecha || $fecha->format('Y-m-d') !== $datos['fechaNacimiento']) {
-    responder(400, false, 'La fecha de nacimiento no es válida');
+if (!in_array($datos['estado'], ['activo', 'inactivo'], true)) {
+    responder(400, false, 'El estado seleccionado no es válido');
+}
+
+foreach (['fechaNacimiento', 'fechaIngreso'] as $campoFecha) {
+    $fecha = DateTime::createFromFormat('!Y-m-d', $datos[$campoFecha]);
+    if (!$fecha || $fecha->format('Y-m-d') !== $datos[$campoFecha]) {
+        responder(400, false, 'La fecha indicada no es válida');
+    }
 }
 
 try {
