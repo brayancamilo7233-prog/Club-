@@ -1,8 +1,22 @@
 USE club;
 
 ALTER TABLE asociados
-    ADD COLUMN fechaIngreso DATE NULL,
-    ADD COLUMN estado VARCHAR(20) NOT NULL DEFAULT 'activo';
+  CHANGE COLUMN `Documento-Identidad` documento VARCHAR(30) NOT NULL,
+  CHANGE COLUMN `Nombre` nombres VARCHAR(100) NOT NULL,
+  CHANGE COLUMN `Apellido` apellidos VARCHAR(100) NOT NULL,
+  ADD COLUMN fechaNacimiento DATE NULL,
+  ADD COLUMN genero VARCHAR(20) NULL,
+  ADD COLUMN direccionResidencia VARCHAR(200) NULL,
+  ADD COLUMN ciudad VARCHAR(100) NULL,
+  ADD COLUMN telefono VARCHAR(30) NOT NULL DEFAULT '',
+  ADD COLUMN email VARCHAR(254) NULL,
+  ADD COLUMN fechaIngreso DATE NULL,
+  ADD COLUMN estado VARCHAR(20) NOT NULL DEFAULT 'activo',
+  ADD COLUMN password_hash VARCHAR(255) NULL,
+  ADD UNIQUE KEY uq_asociados_email (email);
+
+ALTER TABLE asociados
+  CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS actividades (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

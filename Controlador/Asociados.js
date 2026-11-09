@@ -12,7 +12,18 @@ if (formulario) {
             return;
         }
 
-        const asociado = Object.fromEntries(new FormData(formulario).entries());
+        const datosFormulario = Object.fromEntries(new FormData(formulario).entries());
+        const confirmarContrasena = datosFormulario.confirmPassword;
+
+        if (confirmarContrasena !== undefined) {
+            if (datosFormulario.password !== confirmarContrasena) {
+                mensajeRegistro.textContent = "Las contraseñas no coinciden.";
+                mensajeRegistro.dataset.tipo = "error";
+                formulario.elements.confirmPassword.focus();
+                return;
+            }
+            delete datosFormulario.confirmPassword;
+        }
 
         botonGuardar.disabled = true;
         mensajeRegistro.textContent = "Guardando...";
@@ -22,7 +33,7 @@ if (formulario) {
             const respuesta = await fetch(formulario.action, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(asociado),
+                body: JSON.stringify(datosFormulario),
             });
             const resultado = await respuesta.json();
 

@@ -35,8 +35,6 @@ $camposObligatorios = [
     'ciudad',
     'telefono',
     'email',
-    'fechaIngreso',
-    'estado',
 ];
 
 foreach ($camposObligatorios as $campo) {
@@ -50,6 +48,14 @@ if (filter_var($datos['email'], FILTER_VALIDATE_EMAIL) === false) {
     responder(400, false, 'El correo electrónico no es válido');
 }
 
+$crearCuenta = isset($_GET['crearCuenta']) && $_GET['crearCuenta'] === '1';
+if ($crearCuenta && (!isset($datos['password']) || !is_string($datos['password']) || strlen($datos['password']) < 8)) {
+    responder(400, false, 'La contraseña debe tener al menos 8 caracteres');
+}
+if (isset($datos['password']) && (!is_string($datos['password']) || strlen($datos['password']) < 8)) {
+    responder(400, false, 'La contraseña debe tener al menos 8 caracteres');
+}
+
 if (!in_array($datos['genero'], ['Masculino', 'Femenino', 'otro'], true)) {
     responder(400, false, 'El género seleccionado no es válido');
 }
@@ -59,10 +65,18 @@ if (!in_array($datos['estado'], ['activo', 'inactivo'], true)) {
 }
 
 foreach (['fechaNacimiento', 'fechaIngreso'] as $campoFecha) {
+    if ($campoFecha === 'fechaIngreso' && empty($datos[$campoFecha])) {
+        $datos[$campoFecha] = date('Y-m-d');
+    }
     $fecha = DateTime::createFromFormat('!Y-m-d', $datos[$campoFecha]);
     if (!$fecha || $fecha->format('Y-m-d') !== $datos[$campoFecha]) {
         responder(400, false, 'La fecha indicada no es válida');
     }
+}
+
+$datos['estado'] = isset($datos['estado']) ? trim((string) $datos['estado']) : 'activo';
+if (!in_array($datos['estado'], ['activo', 'inactivo'], true)) {
+    responder(400, false, 'El estado seleccionado no es válido');
 }
 
 try {

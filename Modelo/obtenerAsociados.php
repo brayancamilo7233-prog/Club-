@@ -14,6 +14,7 @@ try {
     $consulta = $conexion->query(
         "SELECT documento, CONCAT_WS(' ', nombres, apellidos) AS nombre
          FROM asociados
+         WHERE estado = 'activo'
          ORDER BY apellidos, nombres"
     );
 

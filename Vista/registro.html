@@ -1,66 +1,55 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>CLUB ACERIAS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro de asociados | Club Acerías</title>
     <link rel="stylesheet" href="../Assets/css/estilos.css">
 </head>
-
 <body>
-
-    <div>
-
-        <form id="FormRegistro" action="" method="post">
-                <legend>Registro de asociados - Acerias</legend>
+    <main>
+        <form id="formRegistro" action="../Modelo/guardarAsociado.php?crearCuenta=1" method="post">
+            <fieldset>
+                <legend>Registro de asociados - Acerías</legend>
 
                 <div class="grupo-input">
-                    <label>Ingresar Documento:</label>
-                    <input type="number" id="documento" required placeholder="ejemplo:1052837272">
+                    <label for="documento">Ingresar documento:</label>
+                    <input type="text" id="documento" name="documento" inputmode="numeric" autocomplete="off" required placeholder="Ejemplo: 1052837272">
                 </div>
 
                 <div class="grupo-input">
-                    <label>Ingresar el Nombre:</label>
-                    <input type="text" id="nombre" required placeholder="ejemplo:Brayan Lara">
+                    <label for="nombres">Ingresar nombres:</label>
+                    <input type="text" id="nombres" name="nombres" autocomplete="given-name" required placeholder="Nombres">
                 </div>
 
                 <div class="grupo-input">
-                    <label>Ingresar el Apellido:</label>
-                    <input type="text" id="apellido" required placeholder="ejemplo:Brayan Lara">
+                    <label for="apellidos">Ingresar apellidos:</label>
+                    <input type="text" id="apellidos" name="apellidos" autocomplete="family-name" required placeholder="Apellidos">
                 </div>
 
                 <div class="grupo-input">
-                    <label>Ingresar la Fecha de Nacimiento:</label>
-                    <input type="date" id="fechaNacimiento" required placeholder="ejemplo:19/02/2005">
+                    <label for="fechaNacimiento">Ingresar fecha de nacimiento:</label>
+                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
                 </div>
 
-                <div class="grupo-input">
-                    <label>Ingresar el Genero:</label>
+                <fieldset class="grupo-input">
+                    <legend>Ingresar género:</legend>
                     <div class="genero">
-                        <label>
-                        <input type="radio" id="Masculino" name="genero" value="Masculino">
-                        <span>Masculino</span>
-                        </label>
-                        <label>
-                        <input type="radio" id="Femenino" name="genero" value="M">
-                        <span>Femenino</span>
-                        </label>
-                        <label>
-                        <input type="radio" id="otro" name="genero" value="otro">
-                        <span>Otro</span>
-                        </label>
+                        <label><input type="radio" name="genero" value="Masculino" required><span>Masculino</span></label>
+                        <label><input type="radio" name="genero" value="Femenino"><span>Femenino</span></label>
+                        <label><input type="radio" name="genero" value="otro"><span>Otro</span></label>
                     </div>
+                </fieldset>
+
+                <div class="grupo-input">
+                    <label for="direccionResidencia">Ingresar dirección:</label>
+                    <input type="text" id="direccionResidencia" name="direccionResidencia" autocomplete="street-address" required placeholder="Ejemplo: Cra. 11 # 9-92">
                 </div>
 
                 <div class="grupo-input">
-                    <label>Ingresar la Direccion:</label>
-                    <input type="text" id="direccionResidencia" required placeholder="ejemplo: cra 11 9 92">
-                </div>
-
-                <div class="grupo-input">
-                    <label>Ingresar la Ciudad:</label>
-                    <select name="Ciudad" id="ciudad" required>
+                    <label for="ciudad">Ingresar ciudad:</label>
+                    <select name="ciudad" id="ciudad" required>
+                        <option value="" selected disabled>Selecciona una ciudad</option>
                         <option value="sogamoso">Sogamoso</option>
                         <option value="duitama">Duitama</option>
                         <option value="tunja">Tunja</option>
@@ -70,13 +59,23 @@
                 </div>
 
                 <div class="grupo-input">
-                    <label>Ingresar el Telefono:</label>
-                    <input type="tel" id="telefono" required placeholder="ejemplo: 1052837272">
+                    <label for="telefono">Ingresar teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono" autocomplete="tel" required placeholder="Número de contacto">
                 </div>
 
                 <div class="grupo-input">
-                    <label>Ingresar el Email:</label>
-                    <input type="email" id="email" required placeholder="ejemplo: brayancamilo7233@gmail.com">
+                    <label for="email">Ingresar correo electrónico:</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required placeholder="nombre@correo.com">
+                </div>
+
+                <div class="grupo-input">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres">
+                </div>
+
+                <div class="grupo-input">
+                    <label for="confirmPassword">Confirmar contraseña:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" minlength="8" required placeholder="Repite la contraseña">
                 </div>
 
                 <div class="grupo-botones">
@@ -84,13 +83,13 @@
                     <button type="reset">Limpiar</button>
                 </div>
 
+                <p id="mensajeRegistro" role="status" aria-live="polite"></p>
                 <div class="iniciar-sesion">
-                    <p>Ya tienes una cuenta? <a href="login.html">Iniciar sesion</a></p>
+                    <p>¿Ya tienes una cuenta? <a href="login.html">Iniciar sesión</a></p>
                 </div>
+            </fieldset>
         </form>
-
-    </div>
-
+    </main>
+    <script src="../Controlador/Asociados.js"></script>
 </body>
-
 </html>
