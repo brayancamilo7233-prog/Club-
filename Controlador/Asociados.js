@@ -1,4 +1,4 @@
-const formulario = document.getElementById("formRegistro");
+const formulario = document.querySelector("#formRegistro, #formPerfil");
 
 if (formulario) {
     formulario.addEventListener("submit", async function (event) {

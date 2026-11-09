@@ -1,32 +1,54 @@
-# Club Acerías
+# Sistema de gestión del Club Acerías
 
-## Requisitos
+Interfaz web académica responsive para registrar actividades, pagos, préstamos y asociados. Está construida con HTML5, Bootstrap 5 y CSS/JavaScript propios.
 
-- PHP 7.4 o posterior con las extensiones `PDO` y `pdo_mysql`.
-- MySQL 5.7+ o MariaDB 10.3+.
+## Estructura
 
-## Preparar la base de datos
-
-Importa `DB/club_acerias.sql` con phpMyAdmin o desde la terminal:
-
-```sh
-mysql -u root -p < DB/club_acerias.sql
+```text
+Club--main/
+├── index.html
+├── README.md
+├── Assets/
+│   ├── css/
+│   │   ├── club.css
+│   │   └── estilos.css        # Hoja de estilos del proyecto anterior
+│   └── js/
+│       └── app.js
+└── Vista/
+    ├── Dashboart.html          # Panel del proyecto anterior
+    ├── actividades.html
+    ├── asociados.html
+    ├── login.html              # Página del proyecto anterior
+    ├── pagos.html
+    ├── prestamos.html
+    └── registro.html           # Página del proyecto anterior
 ```
 
-La conexión usa por defecto `127.0.0.1`, base de datos `club_acerias`, usuario
-`root` y contraseña vacía, configuración habitual de XAMPP local. Para otros
-datos, configura las variables de entorno `DB_HOST`, `DB_NAME`, `DB_USER` y
-`DB_PASS` antes de iniciar PHP. No guardes contraseñas de producción en el
-código.
+## Archivos de esta interfaz
 
-## Iniciar el proyecto
+- `index.html`: panel principal con tarjetas para acceder a cada formulario.
+- `Vista/actividades.html`: nombre, descripción, fecha, hora, lugar y responsable.
+- `Vista/pagos.html`: número de recibo, asociado, concepto, valor, fecha y método de pago.
+- `Vista/prestamos.html`: código, asociado, monto, fecha de solicitud, plazo y observaciones.
+- `Vista/asociados.html`: documento, nombre, correo, teléfono, dirección, fecha de ingreso y estado.
+- `Assets/css/club.css`: hoja compartida con la identidad visual azul y turquesa, bordes redondeados, bloques para campos y ajustes responsive de los cuatro formularios.
+- `Assets/js/app.js`: validación del navegador, confirmación visual y limpieza del formulario.
 
-Desde la carpeta raíz del repositorio, inicia el servidor local de PHP:
+Bootstrap 5 y Bootstrap Icons se cargan desde CDN, por lo que se requiere conexión a internet para obtener esos recursos. Los formularios son una maqueta de frontend: no envían ni guardan datos; para persistirlos haría falta conectarlos a un backend.
 
-```sh
-php -S 127.0.0.1:8001
+## Publicar en GitHub
+
+Sube la carpeta completa `Club--main`, incluyendo `index.html`, `README.md`, `Assets/` y `Vista/`. No subas solo los HTML: las páginas necesitan las hojas de estilo y el JavaScript. No se requieren dependencias instaladas ni `node_modules`.
+
+Desde una terminal situada dentro de la carpeta `Club--main`, ejecuta:
+
+```bash
+git init
+git add .
+git commit -m "Crear interfaz de gestión del club"
+git branch -M main
+git remote add origin https://github.com/USUARIO/NOMBRE-DEL-REPOSITORIO.git
+git push -u origin main
 ```
 
-Abre <http://127.0.0.1:8001/Vista/registro.html>. El formulario envía los datos
-como JSON a `Modelo/guardarAsociado.php`; las respuestas informan el resultado
-en el mensaje accesible debajo de los botones.
+Reemplaza `USUARIO` y `NOMBRE-DEL-REPOSITORIO` por los datos de tu repositorio. Si ya existe un remoto llamado `origin`, omite `git remote add origin ...`. Para publicar con GitHub Pages, selecciona la rama `main` y la carpeta raíz (`/`) en **Settings > Pages**.

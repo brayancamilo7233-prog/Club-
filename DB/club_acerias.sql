@@ -1,8 +1,8 @@
-CREATE DATABASE IF NOT EXISTS club_acerias
+CREATE DATABASE IF NOT EXISTS club
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 
-USE club_acerias;
+USE club;
 
 CREATE TABLE IF NOT EXISTS asociados (
     documento VARCHAR(30) NOT NULL,
