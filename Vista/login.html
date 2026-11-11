@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -10,18 +11,20 @@
 
     <div>
 
-        <form id="FormRegistro" action="" method="post">
-             <legend>INICIAR SESION</legend>
+        <form id="login-form" action="../Modelo/IniciarSesion.php" method="post">
+            <legend>INICIAR SESION</legend>
 
             <div class="grupo-input">
-                <label>Ingresar el Email:</label>
-                <input type="email" id="email" required placeholder="ejemplo: brayancamilo7233@gmail.com">
-            </div class="grupo-input">
-
-            <div class="grupo-input">
-                <label>Ingresar Contraseña:</label>
-                <input type="password" id="contrasena" required placeholder="ejemplo: ********">
+                <label for="email">Ingresar el Email:</label>
+                <input type="email" id="email" name="email" required placeholder="ejemplo: correo@gmail.com">
             </div>
+
+            <div class="grupo-input">
+                <label for="password">Ingresar Contraseña:</label>
+                <input type="password" id="password" name="password" required placeholder="ejemplo: ********">
+            </div>
+
+            <p id="mensaje" style="color: red;"></p>
 
             <div class="grupo-botones">
                 <button type="submit">Iniciar Sesion</button>
@@ -34,6 +37,7 @@
 
     </div>
 
+    <script src="../Controlador/Login.js"></script>
 </body>
 
 </html>

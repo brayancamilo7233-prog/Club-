@@ -1,36 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const logueado = localStorage.getItem('logueado');
-    if (!logueado) {
+    // Si no ha iniciado sesión, volver al login
+    if (localStorage.getItem('logueado') !== 'true') {
         window.location.href = 'login.html';
         return;
     }
 
-    const email = localStorage.getItem('email') || 'Usuario';
+    // Datos que guardó Login.js con la respuesta de IniciarSesion.php
+    const nombre = localStorage.getItem('nombre') || 'Usuario';
     const rol = localStorage.getItem('rol') || 'usuario';
 
-    const usuarioActual = document.getElementById('usuarioActual');
-    if (usuarioActual) {
-        usuarioActual.textContent = email;
+    document.getElementById('usuarioActual').textContent = nombre;
+    document.getElementById('rolActual').textContent = rol;
+
+    // Las tarjetas marcadas como "solo-admin" se ocultan a los usuarios normales
+    if (rol !== 'admin') {
+        document.querySelectorAll('.solo-admin').forEach((tarjeta) => tarjeta.remove());
     }
 
-    const tarjetasAdministrador = document.getElementById('tarjetasAdministrador');
-    const tarjetasAsociado = document.getElementById('tarjetasAsociado');
-
-    if (tarjetasAdministrador) {
-        tarjetasAdministrador.style.display = rol === 'admin' ? 'flex' : 'none';
-    }
-
-    if (tarjetasAsociado) {
-        tarjetasAsociado.style.display = rol === 'admin' ? 'none' : 'block';
-    }
-
-    const btnCerrarSesion = document.getElementById('btnCerrarSesion');
-    if (btnCerrarSesion) {
-        btnCerrarSesion.addEventListener('click', () => {
-            localStorage.removeItem('logueado');
-            localStorage.removeItem('email');
-            localStorage.removeItem('rol');
-            window.location.href = 'login.html';
-        });
-    }
+    document.getElementById('btnCerrarSesion').addEventListener('click', () => {
+        localStorage.removeItem('logueado');
+        localStorage.removeItem('nombre');
+        localStorage.removeItem('rol');
+        window.location.href = 'login.html';
+    });
 });

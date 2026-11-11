@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS asociados (
     email VARCHAR(254) NOT NULL,
     fechaIngreso DATE NULL,
     estado VARCHAR(20) NOT NULL DEFAULT 'activo',
+    rol VARCHAR(20) NOT NULL DEFAULT 'usuario',
     password_hash VARCHAR(255) NULL,
     creadoEn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (documento),

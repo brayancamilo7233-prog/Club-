@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Servidor PHP",
+            "type": "process",
+            "command": "C:\\laragon\\bin\\php\\php-8.3.36-Win32-vs16-x64\\php.exe",
+            "args": ["-S", "127.0.0.1:8080", "-t", "${workspaceFolder}"],
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "php",
+                "pattern": { "regexp": "^__nunca__$" },
+                "background": {
+                    "beginsPattern": "Development Server",
+                    "endsPattern": "started"
+                }
+            }
+        }
+    ]
+}

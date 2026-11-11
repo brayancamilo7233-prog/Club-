@@ -13,7 +13,9 @@ Interfaz web académica responsive para registrar actividades, pagos, préstamos
     & "C:\laragon\bin\php\php-8.3.36-Win32-vs16-x64\php.exe" -S 127.0.0.1:8080 -t .
    ```
 
-4. Abre `http://localhost:8080` en Chrome.
+4. Abre `http://127.0.0.1:8080/Vista/login.html` en Chrome (o `http://127.0.0.1:8080` para el panel).
+
+   En VS Code también puedes pulsar `F5` («Iniciar Chrome para localhost»): inicia este mismo servidor PHP automáticamente y luego abre Chrome.
 
 No abras la página con `file://` ni uses Live Server: PHP necesita servirse por HTTP. Mantén abierta la terminal mientras uses el sitio y pulsa `Ctrl+C` para detener el servidor.
 

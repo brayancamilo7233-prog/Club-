@@ -1,29 +1,40 @@
-const usuarios = [
-    { email: 'Admin@gmail.com', clave: '12345678', rol: 'admin' },
-    { email: 'almin@gmail.com', clave: '12345678', rol: 'usuario' },
-    { email: 'Usurio@gmail.com', clave: '12345678', rol: 'usuario' }
-];
+const formulario = document.getElementById("login-form");
+const mensaje = document.getElementById("mensaje");
+const boton = formulario.querySelector("button[type='submit']");
 
-const loginForm = document.getElementById('login-form');
+formulario.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  mensaje.textContent = "";
+  boton.disabled = true;
 
-if (loginForm) {
-    loginForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value.trim().toLowerCase();
-        const password = document.getElementById('password').value;
-        const usuarioEncontrado = usuarios.find(
-            usuario => usuario.email.toLowerCase() === email && usuario.clave === password
-        );
-
-        if (usuarioEncontrado) {
-            localStorage.setItem('logueado', 'true');
-            localStorage.setItem('email', usuarioEncontrado.email);
-            localStorage.setItem('rol', usuarioEncontrado.rol);
-            window.location.href = 'Dashboart.html';
-            return;
-        }
-
-        window.alert('Usuario o contraseña incorrectos.');
+  try {
+    const respuesta = await fetch(formulario.action, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        Object.fromEntries(new FormData(formulario).entries())
+      ),
     });
-}
+
+    const resultado = await respuesta.json();
+
+    if (!resultado.success) {
+      mensaje.textContent =
+        "No fue posible iniciar sesión. Por favor, verifica tus credenciales.";
+      boton.disabled = false;
+      return;
+    }
+
+    localStorage.setItem("logueado", "true");
+    localStorage.setItem("rol", resultado.rol);
+    localStorage.setItem("nombre", resultado.nombre);
+
+    window.location.href = "Dashboart.html";
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    mensaje.textContent =
+      "Ocurrió un error al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.";
+  } finally {
+    boton.disabled = false;
+  }
+});

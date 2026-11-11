@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -12,47 +12,102 @@
             font-size: 45px;
             color: #78a6ec;
         }
+
+        .modulo-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .modulo-card {
+            height: 100%;
+            transition: transform .15s, box-shadow .15s;
+        }
+
+        .modulo-link:hover .modulo-card {
+            transform: translateY(-4px);
+            box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+        }
     </style>
 </head>
 
 <body class="bg-light">
-    <div class="header-mr d-fext justify-content-between align-items-center">
-        <h3>CLUB ACERIAS - Panel principal</h3>
-        <div class="text-end">
-            <small>Brayan Lara</small>
-            <button class="btn btn-danger btn-sm mt1"><i class="bi-box-arrow-right"></i> Cerrar sesión</button>
+    <header class="d-flex justify-content-between align-items-center px-4 py-3 bg-white shadow-sm">
+        <h3 class="m-0">CLUB ACERIAS - Panel principal</h3>
+        <div class="d-flex align-items-center gap-2">
+            <span>
+                <i class="bi bi-person-circle"></i>
+                <span id="usuarioActual">Usuario</span>
+                <span id="rolActual" class="badge text-bg-secondary ms-1"></span>
+            </span>
+            <button id="btnCerrarSesion" class="btn btn-danger btn-sm" type="button">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </button>
         </div>
-    </div>
+    </header>
 
     <div class="container py-4">
-        <h5 class="mb-4 fw-bold">Modulos del club de asociados</h5>
-        <div id="tarjetasAdministrador" class="row g-4">
-            <div class="col-md-3">
-                <div class="card modulo-card shadow-sm p-3">
-                    <i class="bi bi-people icono-principal"></i>
-                    <h4 class="text-primary">Asociados</h4>
-                    <strong>Gestión de asociados</strong>
-                    <p class="text-muted">
-                        Administra la información de los asociados, incluyendo datos personales, membresías y
-                        actividades.
-                    </p>
-                </div>
+        <h5 class="mb-4 fw-bold">Módulos del club de asociados</h5>
+        <div class="row g-4">
+
+            <!-- Solo lo ve el administrador -->
+            <div class="col-sm-6 col-lg-3 solo-admin">
+                <a class="modulo-link" href="asociados.html">
+                    <div class="card modulo-card shadow-sm p-3">
+                        <i class="bi bi-people icono-principal"></i>
+                        <h4 class="text-primary">Asociados</h4>
+                        <strong>Gestión de asociados</strong>
+                        <p class="text-muted">
+                            Administra la información de los asociados, incluyendo datos personales, membresías y
+                            actividades.
+                        </p>
+                    </div>
+                </a>
             </div>
 
-
-            <div class="col-md-3">
-                <div class="card modulo-card shadow-sm p-3">
-                    <i class="bi bi-cash icono-principal"></i>
-                    <h4 class="text-primary">Prestamos</h4>
-                    <strong>Gestión de préstamos</strong>
-                    <p class="text-muted">
-                        Administra los préstamos otorgados a los asociados, incluyendo seguimiento de pagos y
-                        vencimientos.
-                    </p>
-                </div>
+            <div class="col-sm-6 col-lg-3">
+                <a class="modulo-link" href="prestamos.html">
+                    <div class="card modulo-card shadow-sm p-3">
+                        <i class="bi bi-cash icono-principal"></i>
+                        <h4 class="text-primary">Préstamos</h4>
+                        <strong>Gestión de préstamos</strong>
+                        <p class="text-muted">
+                            Administra los préstamos otorgados a los asociados, incluyendo seguimiento de pagos y
+                            vencimientos.
+                        </p>
+                    </div>
+                </a>
             </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <a class="modulo-link" href="pagos.html">
+                    <div class="card modulo-card shadow-sm p-3">
+                        <i class="bi bi-receipt icono-principal"></i>
+                        <h4 class="text-primary">Pagos</h4>
+                        <strong>Registro de pagos</strong>
+                        <p class="text-muted">
+                            Registra los pagos de los asociados con su recibo, concepto, valor y método de pago.
+                        </p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <a class="modulo-link" href="actividades.html">
+                    <div class="card modulo-card shadow-sm p-3">
+                        <i class="bi bi-calendar-event icono-principal"></i>
+                        <h4 class="text-primary">Actividades</h4>
+                        <strong>Actividades del club</strong>
+                        <p class="text-muted">
+                            Programa las actividades del club con su fecha, hora, lugar y responsable.
+                        </p>
+                    </div>
+                </a>
+            </div>
+
         </div>
     </div>
+
+    <script src="../Controlador/Dashboart.js"></script>
 </body>
 
 </html>

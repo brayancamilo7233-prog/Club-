@@ -13,6 +13,7 @@ ALTER TABLE asociados
   ADD COLUMN fechaIngreso DATE NULL,
   ADD COLUMN estado VARCHAR(20) NOT NULL DEFAULT 'activo',
   ADD COLUMN password_hash VARCHAR(255) NULL,
+  ADD COLUMN rol VARCHAR(20) NOT NULL DEFAULT 'usuario',
   ADD UNIQUE KEY uq_asociados_email (email);
 
 ALTER TABLE asociados
