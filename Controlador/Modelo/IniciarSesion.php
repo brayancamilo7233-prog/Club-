@@ -41,7 +41,8 @@ try {
     // Nuevo ID de sesión al autenticarse (evita fijación de sesión)
     session_regenerate_id(true);
 
-    $_SESSION["rol"] = strtolower($asociado['rol'] ?? 'usuario');
+    // Solo existen dos roles: admin y asociado
+    $_SESSION["rol"] = strtolower($asociado['rol'] ?? '') === 'admin' ? 'admin' : 'asociado';
     $_SESSION["documento"] = $asociado['documento'];
 
     echo json_encode([

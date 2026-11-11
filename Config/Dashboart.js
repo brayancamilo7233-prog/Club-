@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const nombre = localStorage.getItem('nombre') || 'Usuario';
-    const rol = localStorage.getItem('rol') || 'usuario';
+    const rol = localStorage.getItem('rol') === 'admin' ? 'admin' : 'asociado';
 
     const usuarioActual = document.getElementById('usuarioActual');
     const rolActual = document.getElementById('rolActual');
