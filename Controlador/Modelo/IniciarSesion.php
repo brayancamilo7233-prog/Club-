@@ -26,7 +26,7 @@ try {
         throw new Exception("Email o contraseña inválidos");
     }
 
-    require_once __DIR__ . '/../Config/conexion.php';
+    require_once __DIR__ . '/../../Config/conexion.php';
     $conexion = (new Conexion())->conectar();
 
     $consulta = $conexion->prepare("SELECT * FROM asociados WHERE email = :email");
@@ -38,6 +38,9 @@ try {
         throw new Exception("Email o contraseña incorrectos");
     }
 
+    // Nuevo ID de sesión al autenticarse (evita fijación de sesión)
+    session_regenerate_id(true);
+
     $_SESSION["rol"] = strtolower($asociado['rol'] ?? 'usuario');
     $_SESSION["documento"] = $asociado['documento'];
 
@@ -47,10 +50,11 @@ try {
         "nombre" => $asociado["nombres"] . " " . $asociado["apellidos"],
     ]);
 } catch (PDOException $e) {
+    error_log($e->getMessage());
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Error: " . $e->getMessage(),
+        "message" => "No fue posible conectar con la base de datos.",
     ]);
 } catch (Exception $e) {
     if (http_response_code() === 200) {

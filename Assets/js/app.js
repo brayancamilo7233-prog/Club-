@@ -43,7 +43,7 @@ document.querySelectorAll(".club-form").forEach((form) => {
       const esAsociado = form.dataset.tipo === "asociado";
       const endpoint = esAsociado
         ? "../Modelo/guardarAsociado.php"
-        : `../Modelo/guardarRegistro.php?tipo=${encodeURIComponent(form.dataset.tipo)}`;
+        : `../Controlador/guardarRegistro.php?tipo=${encodeURIComponent(form.dataset.tipo)}`;
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

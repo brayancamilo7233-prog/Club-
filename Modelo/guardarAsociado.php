@@ -42,7 +42,7 @@ try {
         throw new Exception('La contraseña debe tener mínimo 8 caracteres.');
     }
 
-    require_once __DIR__ . '/Asociado.php';
+    require_once __DIR__ . '/../Controlador/Asociado.php';
 
     $asociado = new Asociado($datos);
 
