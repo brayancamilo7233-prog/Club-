@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Actividades | Club Acerías</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../Assets/css/club.css" rel="stylesheet">
+</head>
+<body class="registration-body">
+  <nav class="navbar navbar-expand-lg navbar-dark club-navbar">
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="../index.html"><i class="bi bi-shield-check me-2"></i>Club Acerías</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Mostrar navegación"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="menuPrincipal">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="listaActividades.html">Actividades</a></li>
+          <li class="nav-item"><a class="nav-link" href="pagos.html">Pagos</a></li>
+          <li class="nav-item"><a class="nav-link" href="prestamos.html">Préstamos</a></li>
+          <li class="nav-item"><a class="nav-link" href="asociados.html">Asociados</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container page-content">
+    <div class="page-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+      <div>
+        <a class="back-link" href="../index.html"><i class="bi bi-arrow-left me-1"></i>Volver al panel</a>
+        <span class="eyebrow d-block mt-4">MÓDULO DE ACTIVIDADES</span>
+        <h1 class="h2 fw-bold mt-2">Actividades del club</h1>
+        <p class="text-secondary mb-0">Consulta las actividades programadas y las ya realizadas.</p>
+      </div>
+      <a class="btn btn-primary px-4" href="actividades.html"><i class="bi bi-plus-circle me-2"></i>Nueva actividad</a>
+    </div>
+
+    <!-- Resumen -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <span class="module-icon icon-blue"><i class="bi bi-calendar-event"></i></span>
+            <div>
+              <div class="text-secondary small">Total</div>
+              <div class="fs-4 fw-bold" id="totalActividades">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <span class="module-icon icon-green"><i class="bi bi-calendar-check"></i></span>
+            <div>
+              <div class="text-secondary small">Próximas</div>
+              <div class="fs-4 fw-bold" id="totalProximas">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex align-items-center gap-3">
+            <span class="module-icon icon-orange"><i class="bi bi-clock-history"></i></span>
+            <div>
+              <div class="text-secondary small">Realizadas</div>
+              <div class="fs-4 fw-bold" id="totalRealizadas">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="card form-card">
+      <div class="card-body p-4">
+        <!-- Filtros -->
+        <div class="row g-3 align-items-center mb-3">
+          <div class="col-md-7">
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input id="buscarActividad" class="form-control" type="search" placeholder="Buscar por nombre, lugar o responsable" aria-label="Buscar actividad">
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="btn-group w-100" role="group" aria-label="Filtrar por estado">
+              <input type="radio" class="btn-check" name="filtroEstado" id="filtroTodas" value="todas" checked>
+              <label class="btn btn-outline-primary" for="filtroTodas">Todas</label>
+              <input type="radio" class="btn-check" name="filtroEstado" id="filtroProximas" value="proxima">
+              <label class="btn btn-outline-primary" for="filtroProximas">Próximas</label>
+              <input type="radio" class="btn-check" name="filtroEstado" id="filtroRealizadas" value="realizada">
+              <label class="btn btn-outline-primary" for="filtroRealizadas">Realizadas</label>
+            </div>
+          </div>
+        </div>
+
+        <div id="mensajeActividades" class="alert alert-danger d-none" role="alert"></div>
+
+        <div id="cargandoActividades" class="text-center py-5 text-secondary">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-3 mb-0">Cargando actividades...</p>
+        </div>
+
+        <div class="table-responsive d-none" id="contenedorTabla">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Actividad</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Responsable</th>
+                <th scope="col">Estado</th>
+                <th scope="col" class="text-end">Detalle</th>
+              </tr>
+            </thead>
+            <tbody id="tablaActividades"></tbody>
+          </table>
+        </div>
+
+        <div id="sinActividades" class="text-center py-5 text-secondary d-none">
+          <i class="bi bi-calendar-x fs-1"></i>
+          <p class="mt-2 mb-0">No hay actividades que coincidan.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de detalle -->
+  <div class="modal fade" id="modalActividad" tabindex="-1" aria-labelledby="tituloModalActividad" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="tituloModalActividad"></h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p id="descripcionModal" class="text-secondary"></p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-0"><i class="bi bi-calendar3 me-2 text-primary"></i><span id="fechaModal"></span></li>
+            <li class="list-group-item px-0"><i class="bi bi-clock me-2 text-primary"></i><span id="horaModal"></span></li>
+            <li class="list-group-item px-0"><i class="bi bi-geo-alt me-2 text-primary"></i><span id="lugarModal"></span></li>
+            <li class="list-group-item px-0"><i class="bi bi-person me-2 text-primary"></i><span id="responsableModal"></span></li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><div class="container py-4 text-center text-secondary small">Club Acerías · Sistema de gestión</div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../Assets/js/actividades.js"></script>
+</body>
+</html>
