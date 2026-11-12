@@ -38,4 +38,56 @@ class Actividad
             ':responsable' => trim($datos['responsable'] ?? ''),
         ]);
     }
+
+    // Elimina una actividad por su id. Devuelve true solo si realmente se borró una fila
+    public function eliminar($idActividad)
+    {
+        $id = filter_var($idActividad, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($id === false) {
+            return false;
+        }
+
+        $sql = "DELETE FROM actividades WHERE id = :id";
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([':id' => $id]);
+        return $consulta->rowCount() > 0;
+    }
+
+    // Actualiza una actividad existente. $datos usa los mismos nombres que guardar() más "idActividad"
+    // Devuelve true si la actividad existe (aunque los datos no hayan cambiado) y false si no existe
+    public function editar($datos)
+    {
+        $id = filter_var($datos['idActividad'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($id === false) {
+            return false;
+        }
+
+        $sql = "UPDATE actividades
+                SET nombre = :nombre,
+                    descripcion = :descripcion,
+                    fecha = :fecha,
+                    hora = :hora,
+                    lugar = :lugar,
+                    responsable = :responsable
+                WHERE id = :id";
+        $consulta = $this->conexion->prepare($sql);
+        $consulta->execute([
+            ':nombre' => trim($datos['nombreActividad'] ?? ''),
+            ':descripcion' => trim($datos['descripcion'] ?? ''),
+            ':fecha' => $datos['fecha'] ?? null,
+            ':hora' => $datos['hora'] ?? null,
+            ':lugar' => trim($datos['lugar'] ?? ''),
+            ':responsable' => trim($datos['responsable'] ?? ''),
+            ':id' => $id,
+        ]);
+
+        if ($consulta->rowCount() > 0) {
+            return true;
+        }
+
+        // MySQL devuelve 0 filas afectadas si los datos son iguales: comprobar que el id existe
+        $existe = $this->conexion->prepare("SELECT 1 FROM actividades WHERE id = :id");
+        $existe->execute([':id' => $id]);
+        return (bool) $existe->fetchColumn();
+    }
 }
