@@ -15,7 +15,7 @@ class Actividad
     // Devuelve todas las actividades, de la más reciente a la más antigua
     public function obtenerActividades()
     {
-        $sql = "SELECT id, nombre, descripcion, fecha, TIME_FORMAT(hora, '%H:%i') AS hora, lugar, responsable
+        $sql = "SELECT id, nombre, descripcion, fecha, TIME_FORMAT(hora, '%H:%i') AS hora, lugar, responsable, totalRecaudado
                 FROM actividades
                 ORDER BY fecha DESC, hora DESC";
         $consulta = $this->conexion->prepare($sql);
@@ -23,11 +23,30 @@ class Actividad
         return $consulta->fetchAll();
     }
 
+    // Lee "totalRecaudado" de $datos: vacío o ausente = 0. Devuelve null si no es un número válido (>= 0)
+    private function leerTotalRecaudado($datos)
+    {
+        $valor = $datos['totalRecaudado'] ?? '';
+        if ($valor === '' || $valor === null) {
+            return 0;
+        }
+        if (!is_numeric($valor) || (float) $valor < 0) {
+            return null;
+        }
+        return round((float) $valor, 2);
+    }
+
     // Guarda una actividad. Las claves de $datos son los "name" del formulario actividades.html
+    // "totalRecaudado" es opcional (por defecto 0)
     public function guardar($datos)
     {
-        $sql = "INSERT INTO actividades (nombre, descripcion, fecha, hora, lugar, responsable)
-                VALUES (:nombre, :descripcion, :fecha, :hora, :lugar, :responsable)";
+        $total = $this->leerTotalRecaudado($datos);
+        if ($total === null) {
+            return false;
+        }
+
+        $sql = "INSERT INTO actividades (nombre, descripcion, fecha, hora, lugar, responsable, totalRecaudado)
+                VALUES (:nombre, :descripcion, :fecha, :hora, :lugar, :responsable, :totalRecaudado)";
         $consulta = $this->conexion->prepare($sql);
         return $consulta->execute([
             ':nombre' => trim($datos['nombreActividad'] ?? ''),
@@ -36,6 +55,7 @@ class Actividad
             ':hora' => $datos['hora'] ?? null,
             ':lugar' => trim($datos['lugar'] ?? ''),
             ':responsable' => trim($datos['responsable'] ?? ''),
+            ':totalRecaudado' => $total,
         ]);
     }
 
@@ -58,7 +78,8 @@ class Actividad
     public function editar($datos)
     {
         $id = filter_var($datos['idActividad'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-        if ($id === false) {
+        $total = $this->leerTotalRecaudado($datos);
+        if ($id === false || $total === null) {
             return false;
         }
 
@@ -68,7 +89,8 @@ class Actividad
                     fecha = :fecha,
                     hora = :hora,
                     lugar = :lugar,
-                    responsable = :responsable
+                    responsable = :responsable,
+                    totalRecaudado = :totalRecaudado
                 WHERE id = :id";
         $consulta = $this->conexion->prepare($sql);
         $consulta->execute([
@@ -78,6 +100,7 @@ class Actividad
             ':hora' => $datos['hora'] ?? null,
             ':lugar' => trim($datos['lugar'] ?? ''),
             ':responsable' => trim($datos['responsable'] ?? ''),
+            ':totalRecaudado' => $total,
             ':id' => $id,
         ]);
 
