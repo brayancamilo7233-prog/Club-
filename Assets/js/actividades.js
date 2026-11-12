@@ -48,7 +48,7 @@
 
     const filtradas = actividades.filter((actividad) => {
       const coincideTexto = [actividad.nombre, actividad.lugar, actividad.responsable]
-        .some((valor) => valor.toLowerCase().includes(texto));
+        .some((valor) => String(valor ?? "").toLowerCase().includes(texto));
       const coincideEstado =
         estado === "todas" ||
         (estado === "proxima" && esProxima(actividad)) ||
@@ -99,7 +99,11 @@
   };
 
   fetch("../Modelo/obtenerActividades.php")
-    .then((respuesta) => respuesta.json())
+    .then((respuesta) =>
+      respuesta.json().catch(() => {
+        throw new Error("La respuesta del servidor no es válida.");
+      })
+    )
     .then((resultado) => {
       if (!resultado.success) throw new Error(resultado.mensaje);
       actividades = resultado.actividades;
