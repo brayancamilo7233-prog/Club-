@@ -42,6 +42,12 @@ try {
         throw new Exception('La contraseña debe tener mínimo 8 caracteres.');
     }
 
+    // El estado solo puede ser "activo" o "inactivo" (si no se envía, Asociado usa "activo")
+    if (isset($datos['estado']) && !in_array($datos['estado'], ['activo', 'inactivo'], true)) {
+        http_response_code(400);
+        throw new Exception("El campo: 'estado' no es válido.");
+    }
+
     require_once __DIR__ . '/../Controlador/Asociado.php';
 
     $asociado = new Asociado($datos);
@@ -62,8 +68,10 @@ try {
         http_response_code(409);
         echo json_encode(["success" => false, "mensaje" => "Ya existe un asociado con ese documento o email."]);
     } else {
+        // El detalle técnico va al registro de errores de PHP, no al usuario
+        error_log($e->getMessage());
         http_response_code(500);
-        echo json_encode(["success" => false, "mensaje" => "Error en la base de datos: " . $e->getMessage()]);
+        echo json_encode(["success" => false, "mensaje" => "Error en la base de datos. Inténtalo de nuevo más tarde."]);
     }
 } catch (Exception $e) {
     if (http_response_code() === 200) {

@@ -98,13 +98,6 @@ function mostrarMensaje(texto, exito) {
   mensaje.classList.remove("d-none");
 }
 
-function crearCelda(texto, clase = "") {
-  const td = document.createElement("td");
-  td.textContent = texto;
-  if (clase) td.className = clase;
-  return td;
-}
-
 // ---------- Tabla y resumen ----------
 
 function actualizarResumen() {
@@ -206,6 +199,14 @@ function mostrarActividades() {
     fila.append(tdEstado, acciones);
     listaActividades.append(fila);
   });
+}
+
+function crearCelda(texto, clase = "") {
+  const celda = document.createElement("td");
+  celda.textContent = texto;
+  // "clase" es opcional y solo da el diseño (negrita, text-nowrap)
+  if (clase) celda.className = clase;
+  return celda;
 }
 
 // ---------- Detalle ----------

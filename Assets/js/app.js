@@ -12,7 +12,14 @@ document.querySelectorAll(".club-form").forEach((form) => {
   const associatedSelect = form.querySelector('select[name="asociado"]');
   if (associatedSelect) {
     fetch("../Modelo/obtenerAsociados.php")
-      .then((response) => response.json())
+      .then((response) => {
+        // Sin sesión: ir al inicio de sesión
+        if (response.status === 401) {
+          window.location.href = "login.html";
+          return new Promise(() => {});
+        }
+        return response.json();
+      })
       .then((result) => {
         if (!result.success) throw new Error(result.mensaje);
         result.asociados.forEach((asociado) => {
@@ -49,6 +56,11 @@ document.querySelectorAll(".club-form").forEach((form) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
       });
+      // Sin sesión: ir al inicio de sesión
+      if (response.status === 401) {
+        window.location.href = "login.html";
+        return;
+      }
       const result = await response.json();
       if (!response.ok || !result.success) {
         throw new Error(result.mensaje || "No fue posible guardar los datos.");

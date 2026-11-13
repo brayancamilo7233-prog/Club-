@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 header('Content-Type: application/json; charset=utf-8');
 
 function responderRegistro($estado, $success, $mensaje)
@@ -34,6 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $tipo = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 if (!in_array($tipo, ['actividad', 'pago', 'prestamo'], true)) {
     responderRegistro(400, false, 'Tipo de registro no válido');
+}
+
+// Hay que iniciar sesión para registrar pagos, préstamos o actividades
+if (empty($_SESSION['rol'])) {
+    responderRegistro(401, false, 'Debes iniciar sesión');
+}
+
+// Crear actividades es solo para el administrador (igual que en gestionarActividades.php)
+if ($tipo === 'actividad' && $_SESSION['rol'] !== 'admin') {
+    responderRegistro(403, false, 'Solo un administrador puede crear actividades');
 }
 
 $datos = json_decode(file_get_contents('php://input'), true);

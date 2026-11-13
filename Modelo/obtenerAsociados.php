@@ -1,10 +1,19 @@
 <?php
 
+session_start();
+
 header('Content-Type: application/json; charset=utf-8');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
     echo json_encode(['success' => false, 'mensaje' => 'Método no permitido'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// La lista de asociados (nombres y documentos) solo la ven usuarios con sesión
+if (empty($_SESSION['rol'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'mensaje' => 'Debes iniciar sesión'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
