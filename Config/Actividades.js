@@ -11,6 +11,7 @@ const modalDetalle = new bootstrap.Modal(document.getElementById("modalActividad
 const modalFormulario = new bootstrap.Modal(document.getElementById("modalFormActividad"));
 
 let esAdministrador = false;
+let accionesConfiguradas = false;
 let actividades = [];
 
 async function solicitarApi(metodo, datos) {
@@ -57,9 +58,19 @@ async function cargarActividades() {
   }
 }
 
-// Muestra u oculta lo que solo puede usar el administrador
 function configurarAcciones() {
-  botonNueva.classList.toggle("d-none", !esAdministrador);
+  if (accionesConfiguradas) {
+    return;
+  }
+  const botonNueva = document.getElementById("nuevaActividad");
+  const encabezadoAcciones = document.getElementById("encabezadoAcciones");
+
+  if (esAdministrador) {
+    botonNueva.classList.remove("d-none");
+    encabezadoAcciones.classList.remove("d-none");
+    accionesConfiguradas = true;
+    return;
+  }
 }
 
 // ---------- Utilidades ----------
@@ -132,9 +143,8 @@ function mostrarActividades() {
   if (actividadesFiltradas.length === 0) {
     const fila = document.createElement("tr");
     const celda = document.createElement("td");
-    // En clase es esAdministrador ? 5 : 4 porque allá la columna Acciones se oculta.
-    // Aquí Acciones siempre se ve (todos tienen "Ver detalle"), así que se cuentan las columnas
-    celda.colSpan = document.querySelectorAll("#contenedorTabla thead th").length;
+    // Como en clase: la columna Acciones solo existe para el administrador
+    celda.colSpan = esAdministrador ? 8 : 7;
     celda.className = "text-center py-4 text-muted";
     celda.textContent =
       actividades.length === 0
@@ -149,8 +159,18 @@ function mostrarActividades() {
     const fila = document.createElement("tr");
     // En clase: nombreActividad, fechaEvento y municipio. Aquí se usan los nombres
     // de las columnas de esta base de datos: nombre, fecha y lugar
+    // El nombre es un enlace que abre el detalle (para todos los usuarios)
+    const celdaNombre = document.createElement("td");
+    const enlaceDetalle = document.createElement("button");
+    enlaceDetalle.type = "button";
+    enlaceDetalle.className = "btn btn-link p-0 fw-semibold text-start";
+    enlaceDetalle.title = "Ver detalle";
+    enlaceDetalle.textContent = actividad.nombre;
+    enlaceDetalle.addEventListener("click", () => abrirDetalle(actividad));
+    celdaNombre.append(enlaceDetalle);
+
     fila.append(
-      crearCelda(actividad.nombre, "fw-semibold"),
+      celdaNombre,
       crearCelda(mostrarFecha(actividad.fecha), "text-nowrap"),
       crearCelda(actividad.hora),
       crearCelda(actividad.lugar),
@@ -165,38 +185,32 @@ function mostrarActividades() {
     badge.textContent = proxima ? "Próxima" : "Realizada";
     tdEstado.append(badge);
 
-    // La celda de acciones siempre existe porque todos pueden ver el detalle
-    const acciones = document.createElement("td");
-    acciones.className = "text-end text-nowrap";
-
-    const botonDetalle = document.createElement("button");
-    botonDetalle.type = "button";
-    botonDetalle.className = "btn btn-sm btn-outline-primary";
-    botonDetalle.title = "Ver detalle";
-    botonDetalle.innerHTML = '<i class="bi bi-eye"></i>';
-    botonDetalle.addEventListener("click", () => abrirDetalle(actividad));
-    acciones.append(botonDetalle);
+    fila.append(tdEstado);
 
     // Editar y eliminar solo para el administrador
     if (esAdministrador) {
+      const acciones = document.createElement("td");
+      acciones.className = "text-end text-nowrap";
+
       const botonEditar = document.createElement("button");
       botonEditar.type = "button";
-      botonEditar.className = "btn btn-sm btn-outline-secondary ms-1";
+      botonEditar.className = "btn btn-sm btn-outline-primary me-2";
       botonEditar.title = "Editar";
-      botonEditar.innerHTML = '<i class="bi bi-pencil"></i>';
+      botonEditar.innerHTML = '<i class="bi bi-pencil-square"></i>';
       botonEditar.addEventListener("click", () => abrirFormulario(actividad));
 
       const botonEliminar = document.createElement("button");
       botonEliminar.type = "button";
-      botonEliminar.className = "btn btn-sm btn-outline-danger ms-1";
+      botonEliminar.className = "btn btn-sm btn-outline-danger";
       botonEliminar.title = "Eliminar";
       botonEliminar.innerHTML = '<i class="bi bi-trash"></i>';
-      botonEliminar.addEventListener("click", () => eliminarActividad(actividad));
+      botonEliminar.addEventListener("click", () =>
+        eliminarActividad(actividad),
+      );
 
       acciones.append(botonEditar, botonEliminar);
+      fila.append(acciones);
     }
-
-    fila.append(tdEstado, acciones);
     listaActividades.append(fila);
   });
 }
@@ -272,15 +286,20 @@ async function guardarActividad(event) {
 }
 
 async function eliminarActividad(actividad) {
-  if (!confirm(`¿Eliminar la actividad "${actividad.nombre}"? Esta acción no se puede deshacer.`)) {
+  const confirmar = window.confirm(
+    `¿Deseas eliminar la actividad "${actividad.nombre}"?`,
+  );
+
+  if (!confirmar) {
     return;
   }
+
   try {
-    const resultado = await solicitarApi("DELETE", { idActividad: actividad.id });
-    mostrarMensaje(resultado.mensaje, true);
+    await solicitarApi("DELETE", { idActividad: actividad.id });
     await cargarActividades();
+    alert("actividad eliminada correctamente");
   } catch (error) {
-    mostrarMensaje(error.message, false);
+    alert(error.message);
   }
 }
 

@@ -113,7 +113,7 @@
                 <th scope="col">Responsable</th>
                 <th scope="col">Total recaudado</th>
                 <th scope="col">Estado</th>
-                <th scope="col" class="text-end">Acciones</th>
+                <th scope="col" class="text-end d-none" id="encabezadoAcciones">Acciones</th>
               </tr>
             </thead>
             <tbody id="listaActividades"></tbody>
@@ -157,43 +157,43 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" name="idActividad">
+          <input type="hidden" id="idActividad" name="idActividad">
           <div class="row g-3">
             <div class="col-12">
-              <label for="formNombre" class="form-label">Nombre de la actividad</label>
-              <input id="formNombre" name="nombreActividad" class="form-control" type="text" maxlength="150" required>
+              <label for="nombreActividad" class="form-label">Nombre de la actividad</label>
+              <input id="nombreActividad" name="nombreActividad" class="form-control" type="text" maxlength="150" required>
               <div class="invalid-feedback">Ingresa el nombre de la actividad.</div>
             </div>
             <div class="col-12">
-              <label for="formDescripcion" class="form-label">Descripción</label>
-              <textarea id="formDescripcion" name="descripcion" class="form-control" rows="3" required></textarea>
+              <label for="descripcion" class="form-label">Descripción</label>
+              <textarea id="descripcion" name="descripcion" class="form-control" rows="3" required></textarea>
               <div class="invalid-feedback">Ingresa una descripción.</div>
             </div>
             <div class="col-md-6">
-              <label for="formFecha" class="form-label">Fecha</label>
-              <input id="formFecha" name="fecha" class="form-control" type="date" required>
+              <label for="fecha" class="form-label">Fecha</label>
+              <input id="fecha" name="fecha" class="form-control" type="date" required>
               <div class="invalid-feedback">Selecciona una fecha.</div>
             </div>
             <div class="col-md-6">
-              <label for="formHora" class="form-label">Hora</label>
-              <input id="formHora" name="hora" class="form-control" type="time" required>
+              <label for="hora" class="form-label">Hora</label>
+              <input id="hora" name="hora" class="form-control" type="time" required>
               <div class="invalid-feedback">Selecciona una hora.</div>
             </div>
             <div class="col-md-6">
-              <label for="formLugar" class="form-label">Lugar</label>
-              <input id="formLugar" name="lugar" class="form-control" type="text" maxlength="200" required>
+              <label for="lugar" class="form-label">Lugar</label>
+              <input id="lugar" name="lugar" class="form-control" type="text" maxlength="200" required>
               <div class="invalid-feedback">Ingresa el lugar.</div>
             </div>
             <div class="col-md-6">
-              <label for="formResponsable" class="form-label">Responsable</label>
-              <input id="formResponsable" name="responsable" class="form-control" type="text" maxlength="150" required>
+              <label for="responsable" class="form-label">Responsable</label>
+              <input id="responsable" name="responsable" class="form-control" type="text" maxlength="150" required>
               <div class="invalid-feedback">Ingresa el responsable.</div>
             </div>
-            <div class="col-md-6">
-              <label for="formRecaudado" class="form-label">Total recaudado</label>
+            <div class="col-md-6 d-none" id="campoTotalRecaudado">
+              <label for="totalRecaudado" class="form-label">Total recaudado</label>
               <div class="input-group has-validation">
                 <span class="input-group-text">$</span>
-                <input id="formRecaudado" name="totalRecaudado" class="form-control" type="number" min="0" step="0.01" placeholder="0">
+                <input id="totalRecaudado" name="totalRecaudado" class="form-control" type="number" min="0" step="0.01" placeholder="0">
                 <div class="invalid-feedback">Ingresa un valor mayor o igual a 0.</div>
               </div>
             </div>
@@ -201,7 +201,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle me-2"></i>Guardar</button>
+          <button type="submit" id="guardarActividad" class="btn btn-primary">Guardar</button>
         </div>
       </form>
     </div>
