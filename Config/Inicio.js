@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.getItem("rol") === "admin" ? "admin" : "asociado";
   document.getElementById("datosUsuario").classList.remove("d-none");
 
+  if (localStorage.getItem("rol") === "admin") {
+    document.querySelectorAll(".solo-admin").forEach((tarjeta) => tarjeta.classList.remove("d-none"));
+  }
+
   const btnCerrarSesion = document.getElementById("btnCerrarSesion");
   btnCerrarSesion.classList.remove("d-none");
   btnCerrarSesion.addEventListener("click", cerrarSesion);
